@@ -9,8 +9,6 @@ import web.models.User;
 
 
 @Controller
-//@RequestMapping("/people")
-//@RequestMapping()
 public class UserController {
 
 
@@ -24,7 +22,7 @@ public class UserController {
     @GetMapping("/index")
     public String index(Model model) {
         model.addAttribute("people", userService.index());
-        return "index"; 
+        return "index";
     }
 
     @GetMapping("/{id}")

@@ -1,7 +1,5 @@
 package web.models;
 
-import org.hibernate.annotations.Entity;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 

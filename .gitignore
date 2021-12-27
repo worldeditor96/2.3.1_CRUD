@@ -1,2 +1,5 @@
 # Project exclude paths
 /target/
+/.jpb/
+/WEB-INF/
+/lib/

@@ -7,15 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import web.models.User;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 @ComponentScan("config")
 public class UserDAOImpl implements UserDAO {
-    private static int PEOPLE_COUNT;
-    private List<User> people;
-
 
     private EntityManager entityManager;
 
@@ -24,41 +20,26 @@ public class UserDAOImpl implements UserDAO {
         this.entityManager = entityManager;
     }
 
-    //Блок инициализации или можно конструктор использовать
-    {
-        people = new ArrayList<>();
-
-        people.add(new User(++PEOPLE_COUNT, "Tom", "Brady", 4));
-        people.add(new User(++PEOPLE_COUNT, "Bob", "Marley", 5));
-        people.add(new User(++PEOPLE_COUNT, "Mike", "Jackson", 18));
-        people.add(new User(++PEOPLE_COUNT, "Katy", "Perry", 47));
-    }
-
 
     @Transactional
     public List<User> index() {
-        return people;
-        //return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
+        return entityManager.createQuery("SELECT user FROM User user", User.class).getResultList();
     }
 
     @Transactional
     public User show(int id){
-        return people.stream().filter(person -> person.getId()==id).findAny().orElse(null);
-        //return entityManager.find(User.class, id);
+        return entityManager.find(User.class, id);
     }
 
     @Transactional
     public void save (User user){
-        user.setId(++PEOPLE_COUNT);
-        people.add(user);
-        //entityManager.persist(user);
-        //entityManager.close();
+        entityManager.persist(user);
+        entityManager.close();
     }
 
     @Transactional
     public void update (int id, User updatePerson) {
-        User personToBeUpdate = show(id);
-        //User personToBeUpdate =  entityManager.getReference(User.class,id);
+        User personToBeUpdate =  entityManager.getReference(User.class,id);
 
         personToBeUpdate.setName(updatePerson.getName());
         personToBeUpdate.setLastName(updatePerson.getLastName());
@@ -67,10 +48,9 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     public void delete (int id) {
-        people.removeIf(p->p.getId()==id);
-//        User user = entityManager.find(User.class, id);
-//        if (user != null) {
-//            entityManager.remove(user);
-//        }
+        User user = entityManager.find(User.class, id);
+        if (user != null) {
+            entityManager.remove(user);
+        }
     }
 }
