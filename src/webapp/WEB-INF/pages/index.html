@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ALL USERS</title>
+</head>
+<body>
+
+<h1>Users</h1>
+<table border="1">
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+
+    </tr>
+    <tr th:each="user, state : ${people}"
+        class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+        <td th:utext="${state.count}">No</td>
+        <td th:utext="${user.name}">Name</td>
+        <td th:utext="${user.lastName}">Last Name</td>
+        <td th:utext="${user.age}">age</td>
+
+        <td><a th:href="@{/{id}/edit(id=${user.getId()})}">Edit</a></td>
+
+        <td><form th:method="edit" th:action="@{/{id}/edit/(id=${user.getId()})}">
+            <input type="submit" value="edit"/>
+        </form></td>
+
+        <td><form th:method="DELETE" th:action="@{/{id}/(id=${user.getId()})}">
+            <input type="submit" value="DELETE"/>
+        </form></td>
+    </tr>
+</table>
+
+
+
+<br/>
+<hr/>
+<a href="/new">Create new person</a>
+
+</body>
+</html>
